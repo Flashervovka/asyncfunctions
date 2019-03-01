@@ -1,21 +1,32 @@
 let tasks = [];
-for(let i = 0;i<10;i++){
+/*for(let i = 0;i<10;i++){
     tasks.push(new Task(i,"prepare"))
-}
-async function run(){
-    try{
-        for(let i = 0;i<tasks.length;i++){
-            await Executor.executeTask(tasks[i]);
-        }
-        return new Promise((resolve, reject) => {
-            resolve({status:"Все задачи выполнены"})
-        })
-    }catch (e) {
-        return new Promise((resolve, reject) => {
-            resolve({status:"Произошла ошибка.Задачи не завершены."})
-        })
+}*/
+tasks.push(new Task(0,"prepare"))
+tasks.push(new Task(1,"prepare"))
+tasks.push(new Task(2,"prepare"))
+tasks.push(new Task(3,"prepare"))
+tasks.push(new Task(4,"prepare"))
+tasks.push(new Task(5,"prepare"))
+
+
+
+async function runTask(queue, maxThreads = 0){
+    console.log("==runTask==");
+    let tsks = [];
+    let countTreads = maxThreads<=0 ? queue.length : maxThreads;
+    for(let i = 0;i<countTreads;i++){
+        tsks.push(Executor.executeTask(queue[i]));
     }
+    return Promise.all(tsks);
 }
 
-let promise = run();
-promise.then(result => {console.log(result.status)});
+
+let promise = runTask(tasks,2);
+promise.then(data => {
+    console.log("Выполненные задачи : [");
+        data.map(task => {
+            console.log("{targetId:"+task.targetId+", action:"+task.action+"}");
+        })
+    console.log("]");
+})
