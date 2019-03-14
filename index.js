@@ -7,7 +7,7 @@ tasks.push(new Task(1,"prepare"))
 tasks.push(new Task(2,"prepare"))
 tasks.push(new Task(3,"prepare"))
 tasks.push(new Task(4,"prepare"))
-tasks.push(new Task(5,"prepare"))
+tasks.push(new Task(7,"prepare"))
 
 
 
@@ -22,7 +22,7 @@ async function runTask(queue, maxThreads = 0){
 }
 
 
-let promise = runTask(tasks,2);
+let promise = runTask(tasks,0);
 promise.then(data => {
     console.log("Выполненные задачи : [");
         data.map(task => {
